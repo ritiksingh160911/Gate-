@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sankalp 80 | GATE ECE 2027</title>
+<style>
+:root{
+  --bg:#F3F5FB; --panel:#FFFFFF; --panel2:#E9EDF8; --line:#D5DCEE;
+  --text:#0F1A38; --mute:#55628A;
+  --sig:#0B8A72; --sigbg:#D6F2EA;
+  --gold:#9A6710; --goldbg:#F6E7C4;
+  --L:40%; --onc:#FFFFFF;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Avenir Next","Segoe UI",Inter,system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    color-scheme:dark;
+    --bg:#0A1124; --panel:#111B36; --panel2:#182545; --line:#25345E;
+    --text:#E8EDFB; --mute:#92A0C8;
+    --sig:#6EE7C8; --sigbg:#12332F;
+    --gold:#E8C170; --goldbg:#3A2F14;
+    --L:67%; --onc:#08101F;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
+.shell{max-width:1060px;margin:0 auto;padding:18px 18px 90px}
+
+/* top bar */
+.top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.brand{font-family:var(--serif);font-size:22px;font-weight:600;letter-spacing:.01em}
+.brand small{font-family:var(--sans);font-size:13px;font-weight:400;color:var(--mute);margin-left:8px}
+nav{display:flex;gap:4px;overflow-x:auto;padding:4px;background:var(--panel);border:1px solid var(--line);border-radius:999px;max-width:100%}
+nav button{border:0;background:transparent;padding:8px 15px;border-radius:999px;color:var(--mute);white-space:nowrap;font-weight:500}
+nav button[aria-current="page"]{background:var(--text);color:var(--bg)}
+
+/* hero */
+.hero{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:26px 26px 22px;margin-bottom:22px}
+.hero-head{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:flex-end;margin-bottom:22px}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(26px,4.4vw,40px);line-height:1.1;margin:0 0 8px;letter-spacing:-.01em}
+.hero p{margin:0;color:var(--mute);max-width:52ch}
+.inhand{text-align:right}
+.inhand b{font-family:var(--serif);font-size:34px;font-weight:600;color:var(--gold);font-variant-numeric:tabular-nums}
+.inhand span{display:block;color:var(--mute);font-size:13px}
+
+.ruler{display:flex;gap:7px;height:46px}
+.grp{display:flex;gap:2px;flex:var(--n) 1 0;min-width:0;padding:0;border:0;background:none}
+.sub{--c:hsl(var(--h) 70% var(--L))}
+.cell{flex:1;min-width:1px;border-radius:2px;background:color-mix(in srgb,var(--c) 20%,transparent);transition:background .3s}
+.cell.on{background:var(--c)}
+.grp:hover .cell:not(.on){background:color-mix(in srgb,var(--c) 38%,transparent)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 8px;margin-top:14px}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:transparent;border-radius:999px;padding:4px 11px 4px 9px;font-size:13px;color:var(--mute)}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.chip:hover{color:var(--text);border-color:var(--mute)}
+
+/* generic */
+h2{font-family:var(--serif);font-size:22px;font-weight:600;margin:0 0 4px}
+h3{font-size:15px;margin:0 0 8px;font-weight:650}
+.lead{color:var(--mute);margin:0 0 16px;max-width:64ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.note{background:var(--goldbg);color:var(--text);border-radius:10px;padding:11px 14px;font-size:13.5px;margin:0 0 16px}
+.muted{color:var(--mute)}
+.num{font-variant-numeric:tabular-nums}
+.pill{display:inline-block;border-radius:6px;padding:2px 8px;font-size:12.5px;font-weight:600;background:var(--goldbg);color:var(--gold)}
+.pill.hi{background:var(--sigbg);color:var(--sig)}
+
+/* today */
+.check{display:flex;gap:12px;align-items:center;padding:11px 0;border-top:1px solid var(--line);width:100%;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left}
+.check:first-of-type{border-top:0}
+.box{flex:none;width:22px;height:22px;border-radius:7px;border:1.5px solid var(--mute);display:grid;place-items:center;font-size:14px;line-height:1;color:transparent}
+.check[aria-pressed="true"] .box{background:var(--sig);border-color:var(--sig);color:var(--bg)}
+.check[aria-pressed="true"] .lbl{color:var(--mute);text-decoration:line-through}
+.next{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line);width:100%;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left}
+.next:first-of-type{border-top:0}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--c);flex:none}
+.step{display:flex;align-items:center;gap:12px;margin:6px 0 14px}
+.step button{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);font-size:18px}
+.step b{font-family:var(--serif);font-size:30px;min-width:70px;text-align:center}
+.bars{display:flex;gap:8px;align-items:flex-end;height:84px}
+.bars div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:11.5px;color:var(--mute);gap:4px}
+.bars i{display:block;width:100%;max-width:34px;min-height:3px;border-radius:4px 4px 2px 2px;background:var(--sig);opacity:.85}
+
+/* syllabus */
+.subtabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px}
+.subtabs button{flex:none;border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:8px;font-size:13.5px}
+.subtabs button[aria-current="true"]{border-color:var(--c);box-shadow:inset 0 0 0 1px var(--c)}
+.subtabs .pc{color:var(--mute);font-variant-numeric:tabular-nums}
+.shead{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px}
+.meter{height:8px;border-radius:999px;background:var(--panel2);overflow:hidden;margin:6px 0 4px}
+.meter i{display:block;height:100%;background:var(--c);border-radius:999px;transition:width .35s}
+.topic{padding:15px 0;border-top:1px solid var(--line)}
+.topic:first-child{border-top:0}
+.trow{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center}
+.tname{font-weight:600}
+.tmeta{display:flex;gap:8px;align-items:center;margin-top:4px;font-size:13px;color:var(--mute)}
+.tog{display:flex;gap:6px}
+.tog button{border:1px solid var(--line);background:transparent;border-radius:8px;padding:6px 12px;font-size:13px;color:var(--mute)}
+.tog button[aria-pressed="true"]{background:var(--c);border-color:var(--c);color:var(--onc);font-weight:650}
+details summary{cursor:pointer;font-size:13px;color:var(--mute);margin-top:8px;width:max-content}
+details p{margin:6px 0 0;font-size:13.5px;color:var(--mute);max-width:75ch}
+
+/* plan */
+dl.facts{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;margin:0}
+dl.facts dt{color:var(--mute)} dl.facts dd{margin:0;font-weight:550}
+.prow{display:grid;grid-template-columns:minmax(120px,1.2fr) 52px 1.6fr 64px;gap:12px;align-items:center;padding:11px 0;border-top:1px solid var(--line)}
+.prow:first-of-type{border-top:0}
+input[type=range]{width:100%;accent-color:var(--sig)}
+.total{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;padding-top:14px;border-top:2px solid var(--text);margin-top:4px}
+.total b{font-family:var(--serif);font-size:38px;font-weight:600}
+.ok{color:var(--sig)} .bad{color:var(--gold)}
+
+/* psu */
+.cut{display:grid;grid-template-columns:170px 1fr 80px;gap:14px;align-items:center;padding:13px 0;border-top:1px solid var(--line)}
+.cut:first-of-type{border-top:0}
+.track{position:relative;height:10px;border-radius:999px;background:var(--panel2)}
+.track .fill{position:absolute;inset:0 auto 0 0;border-radius:999px;background:var(--mute)}
+.track .goal{position:absolute;left:80%;top:-8px;bottom:-8px;width:2px;background:var(--gold);border-radius:2px}
+.cut.marks .fill{background:var(--sig)}
+.cut .v{text-align:right;font-family:var(--serif);font-size:20px;font-weight:600}
+.cut small{display:block;color:var(--mute);font-size:12.5px}
+
+/* roadmap */
+.phase{display:grid;grid-template-columns:116px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--line)}
+.phase:first-of-type{border-top:0}
+.phase.now{background:linear-gradient(90deg,var(--sigbg),transparent 70%);margin:0 -20px;padding:16px 20px;border-radius:10px;border-top-color:transparent}
+.phase time{font-weight:600;font-variant-numeric:tabular-nums}
+.phase time small{display:block;font-weight:400;color:var(--mute)}
+.phase b{font-family:var(--serif);font-size:18px;font-weight:600}
+.phase p{margin:4px 0 8px;color:var(--mute)}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+
+@media (max-width:640px){
+  .hero{padding:20px 16px 18px;border-radius:18px}
+  .inhand{text-align:left}
+  .cut{grid-template-columns:1fr 70px;gap:8px 12px}
+  .cut .track{grid-column:1/-1;order:3}
+  .prow{grid-template-columns:1fr 50px;}
+  .prow input{grid-column:1/-1;order:3}
+  .phase{grid-template-columns:1fr;gap:4px}
+  .phase.now{margin:0 -16px;padding:16px}
+  .card{padding:16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="top">
+    <div class="brand">Sankalp 80<small>GATE ECE 2027</small></div>
+    <nav id="nav" aria-label="Sections"></nav>
+  </header>
+  <main id="app"></main>
+</div>
+
+<script>
+/* ---------------------------------------------------------------
+   DATA — edit freely. Marks are planning weights that add up to 100
+   (GA 15 + Maths 13 + ECE core 72). Real papers vary year to year.
+---------------------------------------------------------------- */
+const SUBJECTS = [
+{id:'ga',name:'General aptitude',short:'GA',marks:15,range:'15 (fixed)',h:290,topics:[
+ {n:'Grammar and vocabulary',m:3,d:'Tenses, articles, prepositions, subject-verb agreement, word usage, idioms, sentence completion, synonyms and antonyms.'},
+ {n:'Reading comprehension and verbal reasoning',m:4,d:'Short passages, inference, para-jumbles, critical reasoning, analogies.'},
+ {n:'Arithmetic and algebra',m:3,d:'Percentages, ratio and proportion, time and work, speed and distance, averages, mixtures, number series, basic algebra.'},
+ {n:'Data interpretation',m:2,d:'Tables, bar and pie charts, line graphs, basic statistics.'},
+ {n:'Logical and analytical reasoning',m:2,d:'Seating arrangements, sets, syllogisms, puzzles, direction and ordering.'},
+ {n:'Spatial aptitude and geometry',m:1,d:'Paper folding, cube counting, mirror images, area and volume.'}]},
+{id:'ma',name:'Engineering mathematics',short:'Maths',marks:13,range:'13 (fixed)',h:225,topics:[
+ {n:'Linear algebra',m:3,d:'Vector space, basis, linear dependence and independence, matrix algebra, eigenvalues and eigenvectors, rank, existence and uniqueness of solutions of linear equations.'},
+ {n:'Calculus',m:2,d:'Mean value theorems, integral calculus theorems, partial derivatives, maxima and minima, multiple integrals, line, surface and volume integrals, Taylor series.'},
+ {n:'Differential equations',m:2,d:'First-order linear and nonlinear equations, higher-order linear equations, Cauchy and Euler equations, variation of parameters, PDEs by variable separation, initial and boundary value problems.'},
+ {n:'Vector analysis',m:1,d:'Vectors in plane and space, gradient, divergence, curl, Gauss, Green and Stokes theorems.'},
+ {n:'Complex analysis',m:1,d:'Analytic functions, Cauchy integral theorem and formula, Taylor and Laurent series, residue theorem.'},
+ {n:'Numerical methods',m:1,d:'Nonlinear algebraic equations, single-step and multi-step methods for differential equations.'},
+ {n:'Probability and statistics',m:3,d:'Mean, median, mode, standard deviation, combinatorial probability, binomial, Poisson, exponential and normal distributions, joint and conditional probability, correlation and regression.'}]},
+{id:'ns',name:'Networks',short:'Networks',marks:7,range:'6 to 9',h:150,topics:[
+ {n:'Circuit analysis and theorems',m:2,d:'Node and mesh analysis, superposition, Thevenin, Norton, maximum power transfer.'},
+ {n:'Sinusoidal steady state',m:1.5,d:'Phasors, complex power, power factor, resonance.'},
+ {n:'Transient and Laplace analysis',m:2,d:'Time and frequency domain analysis of RL, RC and RLC circuits, network equations with Laplace transform.'},
+ {n:'Two-port networks and Y-Delta',m:1.5,d:'Linear two-port parameters, wye-delta transformation.'}]},
+{id:'ss',name:'Signals and systems',short:'Signals',marks:9,range:'7 to 10',h:200,topics:[
+ {n:'Continuous-time signals',m:2.5,d:'Fourier series, Fourier transform, sampling theorem and applications.'},
+ {n:'Discrete-time signals',m:2.5,d:'DTFT, DFT, z-transform, discrete-time processing of continuous-time signals.'},
+ {n:'LTI systems',m:3,d:'Definition and properties, causality, stability, impulse response, convolution, poles and zeros, parallel and cascade structures, frequency response, group delay, phase delay.'},
+ {n:'Signal transmission through LTI systems',m:1,d:'Output of LTI systems for standard inputs, distortionless transmission, filters.'}]},
+{id:'ed',name:'Electronic devices',short:'Devices',marks:10,range:'8 to 14',h:28,topics:[
+ {n:'Energy bands and carrier concentration',m:2.5,d:'Intrinsic and extrinsic semiconductors, equilibrium carrier concentration, direct and indirect band-gap semiconductors.'},
+ {n:'Carrier transport',m:1.5,d:'Drift current, mobility and resistivity, generation and recombination, Poisson and continuity equations, diffusion current.'},
+ {n:'P-N junction, Zener, LED, photodiode, laser',m:2,d:'P-N junction, Zener diode, LED, PIN and avalanche photodiode, LASERs.'},
+ {n:'BJT',m:1.5,d:'BJT operation, characteristics, regions, small-signal parameters.'},
+ {n:'MOS capacitor and MOSFET',m:2,d:'MOS capacitor, C-V characteristics, MOSFET operation, threshold voltage, I-V characteristics.'},
+ {n:'Device technology',m:0.5,d:'IC fabrication, oxidation, diffusion, ion implantation, photolithography, n-tub, p-tub and twin-tub CMOS process.'}]},
+{id:'ac',name:'Analog circuits',short:'Analog',marks:10,range:'9 to 12',h:330,topics:[
+ {n:'Diode circuits',m:1.5,d:'Small-signal equivalent of diodes, clipping, clamping, rectifiers.'},
+ {n:'Single-stage BJT and MOSFET amplifiers',m:3,d:'Biasing and bias stability, mid-frequency small-signal analysis, frequency response.'},
+ {n:'Multi-stage, differential, feedback and power amplifiers',m:2,d:'Multi-stage and differential amplifiers, feedback topologies, power amplifiers.'},
+ {n:'Op-amp circuits and active filters',m:2,d:'Simple op-amp circuits, active filters.'},
+ {n:'Oscillators, 555 timer and wave shaping',m:1,d:'Criterion for oscillation, single-transistor and op-amp oscillators, function generators, 555 timers.'},
+ {n:'Voltage references and power supplies',m:0.5,d:'Voltage reference circuits, ripple removal and regulation.'}]},
+{id:'dc',name:'Digital circuits',short:'Digital',marks:8,range:'7 to 10',h:265,topics:[
+ {n:'Number systems',m:0.5,d:'Binary, octal, hexadecimal, complements, codes.'},
+ {n:'Combinational circuits',m:2.5,d:'Boolean algebra, K-map minimisation, logic gates and static CMOS implementation, arithmetic circuits, code converters, multiplexers, decoders, PLAs.'},
+ {n:'Sequential circuits',m:2.5,d:'Latches, flip-flops, counters, shift registers, finite state machines.'},
+ {n:'Data converters',m:1,d:'Sample and hold, ADCs, DACs.'},
+ {n:'Semiconductor memories',m:0.5,d:'ROM, SRAM, DRAM.'},
+ {n:'8085 microprocessor',m:1,d:'Architecture, programming, memory and I/O interfacing.'}]},
+{id:'cs',name:'Control systems',short:'Control',marks:8,range:'7 to 11',h:95,topics:[
+ {n:'Block diagrams, SFG and transfer function',m:1.5,d:'Control system components, block diagram reduction, signal flow graph, feedback principle.'},
+ {n:'Time response and steady-state error',m:1.5,d:'Transient and steady-state analysis of LTI control systems.'},
+ {n:'Stability: Routh-Hurwitz and Nyquist',m:2,d:'Routh-Hurwitz and Nyquist stability criteria, gain and phase margins.'},
+ {n:'Bode and root locus',m:2,d:'Bode plots, root-locus plots, frequency response.'},
+ {n:'Compensators',m:0.5,d:'Lag, lead and lag-lead compensation.'},
+ {n:'State variable models',m:0.5,d:'State variable model and solution of the state equation of LTI systems.'}]},
+{id:'cm',name:'Communications',short:'Comms',marks:10,range:'9 to 13',h:8,topics:[
+ {n:'Random processes',m:2,d:'Autocorrelation, power spectral density, white noise, filtering of random signals through LTI systems.'},
+ {n:'Analog communications',m:3,d:'AM and FM modulation and demodulation, spectra, superheterodyne receivers, circuits for analog communications.'},
+ {n:'Information theory',m:1.5,d:'Entropy, mutual information, channel capacity theorem.'},
+ {n:'Digital communications',m:3,d:'PCM, DPCM, ASK, PSK, FSK, QAM, matched filter receivers, bandwidth and probability of error.'},
+ {n:'Multiple access and GSM basics',m:0.5,d:'Basics of TDMA, FDMA, CDMA and GSM.'}]},
+{id:'em',name:'Electromagnetics',short:'EM',marks:10,range:'8 to 12',h:48,topics:[
+ {n:'Maxwell equations and boundary conditions',m:1.5,d:'Differential and integral forms, interpretation, boundary conditions, wave equation, Poynting vector.'},
+ {n:'Plane waves',m:2.5,d:'Reflection and refraction, polarization, phase and group velocity, propagation in various media, skin depth.'},
+ {n:'Transmission lines and Smith chart',m:3,d:'Line equations, characteristic impedance, matching, impedance transformation, S-parameters, Smith chart.'},
+ {n:'Waveguides',m:1.5,d:'Modes, boundary conditions, cut-off frequencies, dispersion relations.'},
+ {n:'Antennas and radar',m:1,d:'Antenna types, radiation pattern, gain and directivity, return loss, arrays, basics of radar.'},
+ {n:'Optical fibers',m:0.5,d:'Light propagation in optical fibers.'}]}
+];
+SUBJECTS.forEach(s=>s.topics.forEach((t,i)=>t.id=s.id+i));
+
+/* PSU cutoffs for Electronics / ECE, General (UR). Collected from public
+   coaching and news pages; cycles and units differ. Verify before relying. */
+const PSU_MARKS = [
+ {psu:'BEL',role:'Engineer trainee, EC',v:64,note:'Recent cycle, as reported'},
+ {psu:'POWERGRID',role:'Electronics',v:62.33,note:'2025. OBC-NCL 51.33, SC 43.67'},
+ {psu:'IOCL',role:'Electronics',v:61.65,note:'Earlier cycle, as reported'},
+ {psu:'NTPC',role:'Electronics',v:59.33,note:'2025, as reported. AIR near 479 for UR'}
+];
+const PSU_SCORE = [
+ {psu:'ONGC',role:'Electronics',v:865,note:'Older cycle, year not stated'},
+ {psu:'BARC',role:'Electronics',v:807,note:'Older cycle, year not stated'},
+ {psu:'NPCIL',role:'ECE',v:700,note:'2023'}
+];
+
+const D=(y,m,d)=>new Date(y,m,d);
+const START=D(2026,10,14), EXAM=D(2027,1,6);
+const PHASES = [
+ {a:D(2026,10,14),b:D(2026,10,22),t:'Foundation: networks and signals',s:['ns','ss'],g:'Finish concepts, then solve about 15 numericals per topic. These two feed Control, Communications and Analog.'},
+ {a:D(2026,10,23),b:D(2026,11,1),t:'Devices and analog circuits',s:['ed','ac'],g:'Both are numerical-heavy. Practise MOSFET and small-signal problems daily.'},
+ {a:D(2026,11,2),b:D(2026,11,9),t:'Digital and control',s:['dc','cs'],g:'Digital gives quick marks. For Control, keep a one-page sheet of Bode, Nyquist and root-locus rules.'},
+ {a:D(2026,11,10),b:D(2026,11,18),t:'Communications and electromagnetics',s:['cm','em'],g:'Learn modulation and error-probability formulas, then transmission lines and the Smith chart.'},
+ {a:D(2026,11,19),b:D(2026,11,26),t:'Engineering mathematics',s:['ma'],g:'Linear algebra, probability and calculus first. They carry the most marks.'},
+ {a:D(2026,11,27),b:D(2027,0,10),t:'Revision round 1',s:['ns','ss','ed','ac','dc','cs','cm','em','ma'],g:'Topic-wise previous-year questions for every subject. Log every mistake in an error notebook.'},
+ {a:D(2027,0,11),b:D(2027,0,24),t:'Revision round 2',s:['ns','ss','ed','ac','dc','cs','cm','em','ma'],g:'Sectional tests, weak topics, second pass on formulas.'},
+ {a:D(2027,0,25),b:D(2027,1,5),t:'Mock season',s:['ga','ma','ns','ss','ed','ac','dc','cs','cm','em'],g:'Full 3-hour mocks on alternate days, reviewed the next day. No new topics.'}
+];
+const DAILY = ['Concept session (about 2 hours)','Solve 20 numericals on today\u2019s topic','Previous-year questions on today\u2019s topic','General aptitude (30 minutes)','Revise yesterday\u2019s notes (20 minutes)','Add today\u2019s mistakes to the error notebook'];
+
+/* ---------------------------------------------------------------
+   STATE + STORAGE
+   Inside Claude it uses artifact storage. Opened as a normal file in a
+   browser, it falls back to browser storage. If neither works it still
+   runs, but progress is lost on reload.
+---------------------------------------------------------------- */
+const KEY='sankalp80-v1';
+let S={tab:'today',sub:'ns',prog:{},checks:{},hours:{},acc:{}};
+const store={
+  async load(){
+    try{ if(window.storage){ const r=await window.storage.get(KEY); if(r&&r.value) return JSON.parse(r.value);} }catch(e){}
+    try{ const v=window.localStorage.getItem(KEY); if(v) return JSON.parse(v);}catch(e){}
+    return null;
+  },
+  async save(){
+    const {prog,checks,hours,acc}=S; const v=JSON.stringify({prog,checks,hours,acc});
+    try{ if(window.storage){ await window.storage.set(KEY,v); return;} }catch(e){}
+    try{ window.localStorage.setItem(KEY,v);}catch(e){}
+  }
+};
+let saveT; const persist=()=>{clearTimeout(saveT);saveT=setTimeout(()=>store.save(),250)};
+
+/* ---------------------------------------------------------------
+   HELPERS
+---------------------------------------------------------------- */
+const $=s=>document.querySelector(s);
+const midnight=d=>new Date(d.getFullYear(),d.getMonth(),d.getDate());
+const today=()=>midnight(new Date());
+const dayDiff=(a,b)=>Math.round((midnight(b)-midnight(a))/864e5);
+const key=d=>d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+const fmt=(d,o)=>d.toLocaleDateString('en-IN',o||{day:'numeric',month:'short'});
+const sub=id=>SUBJECTS.find(s=>s.id===id);
+const done=t=>(S.prog[t.id]||[0,0,0]).reduce((a,b)=>a+b,0);
+const ready=s=>s.topics.reduce((a,t)=>a+t.m*done(t)/3,0)/s.marks;
+const inHand=()=>SUBJECTS.reduce((a,s)=>a+ready(s)*s.marks,0);
+const phaseFor=d=>PHASES.find(p=>d>=p.a&&d<=p.b);
+const accOf=id=>S.acc[id]??80;
+const yld=m=>m>=2.5?['High yield','hi']:m>=1.5?['Medium yield','']:['Low yield',''];
+const subStyle=s=>`style="--h:${s.h}"`;
+
+/* ---------------------------------------------------------------
+   VIEWS
+---------------------------------------------------------------- */
+const TABS=[['today','Today'],['syllabus','Syllabus'],['plan','Score plan'],['psu','PSU cutoffs'],['road','Roadmap']];
+function renderNav(){
+  $('#nav').innerHTML=TABS.map(([k,l])=>`<button data-a="tab" data-id="${k}" ${S.tab===k?'aria-current="page"':''}>${l}</button>`).join('');
+}
+
+function ruler(){
+  const cells=SUBJECTS.map(s=>{
+    const on=Math.round(ready(s)*s.marks); let c='';
+    for(let i=0;i<s.marks;i++) c+=`<i class="cell${i<on?' on':''}"></i>`;
+    return `<button class="grp sub" data-a="open" data-id="${s.id}" style="--h:${s.h};--n:${s.marks}" aria-label="${s.name}, ${s.marks} marks. Open syllabus">${c}</button>`;
+  }).join('');
+  const legend=SUBJECTS.map(s=>`<button class="chip sub" data-a="open" data-id="${s.id}" style="--h:${s.h}"><i></i>${s.short} ${s.marks}</button>`).join('');
+  return `<div class="ruler" role="group" aria-label="The 100 marks of the paper, one cell per mark">${cells}</div><div class="legend">${legend}</div>`;
+}
+
+function hero(){
+  const now=today(), left=dayDiff(now,EXAM), total=dayDiff(START,EXAM);
+  const head= left>0 ? `${left} day${left===1?'':'s'} to the first exam day` : 'Exam window is here';
+  let sub2;
+  if(now<START) sub2=`Prep begins ${fmt(START,{day:'numeric',month:'long',year:'numeric'})}. The first exam day is ${fmt(EXAM,{day:'numeric',month:'long',year:'numeric'})}; your paper\u2019s exact date is on your admit card.`;
+  else if(left>0) sub2=`You are on day ${dayDiff(START,now)+1} of ${total}. Each cell below is one mark of the paper; it fills as you learn, practise and revise its topics.`;
+  else sub2='Revise formulas, sleep well, and trust the work you have done.';
+  return `<section class="hero">
+    <div class="hero-head">
+      <div><h1>${head}</h1><p>${sub2}</p></div>
+      <div class="inhand"><b class="num">${inHand().toFixed(0)}</b><span>of 100 marks covered. Target: 80</span></div>
+    </div>${ruler()}</section>`;
+}
+
+function viewToday(){
+  const now=today(), k=key(now), ph=phaseFor(now);
+  const checks=S.checks[k]||[]; const doneN=DAILY.filter((_,i)=>checks[i]).length;
+  const focus = ph ? ph.s : [];
+  let next=[];
+  focus.forEach(id=>sub(id).topics.forEach(t=>{ if(done(t)<3) next.push({s:sub(id),t}); }));
+  next.sort((a,b)=>b.t.m-a.t.m); next=next.slice(0,5);
+  const hrs=S.hours[k]||0;
+  const days=[...Array(7)].map((_,i)=>{const d=new Date(now);d.setDate(d.getDate()-(6-i));return d});
+  const mx=Math.max(6,...days.map(d=>S.hours[key(d)]||0));
+  const bars=days.map(d=>{const v=S.hours[key(d)]||0;return `<div><span class="num">${v||''}</span><i style="height:${v/mx*60}px"></i>${d.toLocaleDateString('en-IN',{weekday:'narrow'})}</div>`}).join('');
+  const phaseCard = ph
+   ? `<h3>Focus for ${fmt(ph.a)} to ${fmt(ph.b)}</h3><div class="tags" style="margin-bottom:10px">${ph.s.length<5?ph.s.map(id=>`<button class="chip sub" data-a="open" data-id="${id}" style="--h:${sub(id).h}"><i></i>${sub(id).name}</button>`).join(''):'<span class="chip">All subjects</span>'}</div><p class="muted" style="margin:0 0 14px">${ph.g}</p>`
+   : `<h3>${now<START?'Your plan starts on 14 Nov':'Plan complete'}</h3><p class="muted" style="margin:0 0 14px">${now<START?'Set up your desk tonight. The first block covers Networks and Signals and systems.':'Keep revising and taking mocks.'}</p>`;
+  return `<div class="grid">
+   <div class="card">${phaseCard}
+     <h3>Highest-yield topics to finish next</h3>
+     ${next.length?next.map(x=>`<button class="next sub" data-a="open" data-id="${x.s.id}" style="--h:${x.s.h}"><span class="dot"></span><span style="flex:1">${x.t.n}<small class="muted" style="display:block">${x.s.name}</small></span><span class="pill">${x.t.m} marks</span></button>`).join(''):'<p class="muted">Nothing pending in this block.</p>'}
+   </div>
+   <div class="card"><h3>Today\u2019s checklist <span class="muted num" style="font-weight:400">(${doneN} of ${DAILY.length})</span></h3>
+     ${DAILY.map((l,i)=>`<button class="check" data-a="check" data-i="${i}" aria-pressed="${!!checks[i]}"><span class="box">\u2713</span><span class="lbl">${l}</span></button>`).join('')}
+   </div>
+   <div class="card"><h3>Study hours today</h3>
+     <div class="step"><button data-a="hrs" data-d="-0.5" aria-label="Less time">\u2212</button><b class="num">${hrs}</b><button data-a="hrs" data-d="0.5" aria-label="More time">+</button><span class="muted">hours</span></div>
+     <div class="bars" aria-label="Hours studied in the last 7 days">${bars}</div>
+   </div></div>`;
+}
+
+function viewSyllabus(){
+  const s=sub(S.sub), r=ready(s);
+  const tabs=SUBJECTS.map(x=>`<button class="sub" data-a="open" data-id="${x.id}" style="--h:${x.h}" ${x.id===S.sub?'aria-current="true"':''}><span class="dot"></span>${x.short}<span class="pc">${Math.round(ready(x)*100)}%</span></button>`).join('');
+  const rows=s.topics.map(t=>{
+    const p=S.prog[t.id]||[0,0,0], y=yld(t.m);
+    return `<div class="topic"><div class="trow"><div><div class="tname">${t.n}</div><div class="tmeta"><span class="pill ${y[1]}">${t.m} marks</span>${y[0]}</div></div>
+      <div class="tog">${['Learn','Practise','Revise'].map((l,i)=>`<button data-a="stage" data-t="${t.id}" data-i="${i}" aria-pressed="${!!p[i]}">${l}</button>`).join('')}</div></div>
+      <details><summary>Syllabus detail</summary><p>${t.d}</p></details></div>`;
+  }).join('');
+  return `<div class="note">IIT Madras revised several GATE 2027 syllabi. These topics follow the standing ECE syllabus, so compare them with the official PDF at gate2027.iitm.ac.in and adjust if anything differs.</div>
+   <div class="subtabs">${tabs}</div>
+   <div class="card sub" style="--h:${s.h}">
+     <div class="shead"><div><h2>${s.name}</h2><span class="muted">Planning weight ${s.marks} marks. Seen in past papers: ${s.range} marks.</span></div>
+       <div class="num" style="text-align:right"><b style="font-family:var(--serif);font-size:26px">${(r*s.marks).toFixed(1)}</b><span class="muted"> of ${s.marks} marks covered</span></div></div>
+     <div class="meter"><i style="width:${r*100}%"></i></div>
+     ${rows}
+   </div>`;
+}
+
+function viewPlan(){
+  const rows=SUBJECTS.map(s=>`<div class="prow sub" style="--h:${s.h}"><div><span class="dot" style="display:inline-block;margin-right:8px"></span>${s.name}</div>
+    <div class="num muted">${s.marks}</div>
+    <input type="range" min="0" max="100" step="5" value="${accOf(s.id)}" data-a="acc" data-id="${s.id}" aria-label="Expected accuracy for ${s.name}">
+    <div class="num" style="text-align:right"><span id="av-${s.id}">${accOf(s.id)}</span>%<br><b id="pv-${s.id}">${(s.marks*accOf(s.id)/100).toFixed(1)}</b></div></div>`).join('');
+  return `<div class="grid" style="margin-bottom:16px">
+    <div class="card"><h2>The paper at a glance</h2><p class="lead">Per the IIT Madras GATE 2027 pattern for ECE.</p>
+      <dl class="facts"><dt>Questions</dt><dd>65 (10 aptitude, 55 subject)</dd><dt>Marks</dt><dd>100: aptitude 15, maths 13, ECE core 72</dd><dt>Time</dt><dd>3 hours, computer-based (about 2.8 minutes a question)</dd><dt>Types</dt><dd>MCQ, MSQ and NAT</dd><dt>Negative marks</dt><dd>MCQ only: one third for 1-mark, two thirds for 2-mark questions</dd></dl></div>
+    <div class="card"><h2>What 80 asks of you</h2><p class="lead">Losing 20 marks is allowed. At a flat 80% net accuracy you would need:</p>
+      <dl class="facts"><dt>Aptitude</dt><dd class="num">12 of 15</dd><dt>Maths</dt><dd class="num">10.4 of 13</dd><dt>ECE core</dt><dd class="num">57.6 of 72</dd></dl>
+      <p class="muted" style="margin:14px 0 0;font-size:13.5px">Easy 1-mark and aptitude questions are where most of the cushion is won or lost. Never guess blindly on MCQs; NAT and MSQ carry no penalty.</p></div></div>
+    <div class="card"><h2>Score what-if</h2><p class="lead">Move each slider to your expected net accuracy (after negative marking) and see where the total lands.</p>
+      <div style="display:grid;grid-template-columns:minmax(120px,1.2fr) 52px 1.6fr 64px;gap:12px;font-size:12.5px;color:var(--mute);padding-bottom:6px" class="prow-h"><span>Subject</span><span>Marks</span><span>Accuracy</span><span style="text-align:right">Projected</span></div>
+      ${rows}
+      <div class="total"><span class="muted">Projected score</span><span><b class="num" id="ptot"></b><span class="muted"> / 100</span></span><span id="pdelta"></span></div></div>`;
+}
+function updatePlan(){
+  const t=SUBJECTS.reduce((a,s)=>a+s.marks*accOf(s.id)/100,0);
+  const el=$('#ptot'); if(!el) return;
+  el.textContent=t.toFixed(1);
+  const d=t-80; const e=$('#pdelta');
+  e.className=d>=0?'ok':'bad';
+  e.textContent=d>=0?`${d.toFixed(1)} above target`:`${Math.abs(d).toFixed(1)} short of 80`;
+}
+
+function viewPSU(){
+  const m=PSU_MARKS.slice().sort((a,b)=>b.v-a.v);
+  const top=Math.max(...m.map(x=>x.v));
+  const row=(x,max,cls,unit)=>`<div class="cut ${cls}"><div><b>${x.psu}</b><small>${x.role}</small></div>
+    <div><div class="track"><span class="fill" style="width:${x.v/max*100}%"></span>${cls==='marks'?'<span class="goal" title="Your target: 80"></span>':''}</div><small class="muted" style="margin-top:8px">${x.note}</small></div>
+    <div class="v num">${x.v}</div></div>`;
+  return `<div class="note">These numbers come from public coaching and news pages, not from the PSUs. Years, categories and units differ, and each PSU also weighs interviews, group discussion and vacancies. Treat them as a guide and check every recruitment notice.</div>
+   <div class="card" style="margin-bottom:16px"><h2>Cutoffs quoted in marks</h2>
+     <p class="lead">Electronics and ECE, General category, out of 100. The gold line is your target of 80${m.length?`, which sits ${(80-top).toFixed(0)} marks above the highest cutoff here`:''}.</p>
+     ${m.map(x=>row(x,100,'marks')).join('')}</div>
+   <div class="card" style="margin-bottom:16px"><h2>Cutoffs quoted as GATE score</h2>
+     <p class="lead">Out of 1000. Marks convert to score using that year\u2019s paper difficulty, so these cannot be compared directly with the list above.</p>
+     ${PSU_SCORE.map(x=>row(x,1000,'score')).join('')}</div>
+   <div class="card"><h2>Rough score tiers for General category</h2>
+     <dl class="facts"><dt>850 and above</dt><dd>Strong chance at IOCL, ONGC, HPCL and BHEL shortlists</dd><dt>800 to 850</dt><dd>Likely for NTPC, Power Grid and BPCL</dd><dt>750 to 800</dt><dd>Good for GAIL, NLC and SAIL</dd></dl>
+     <p class="muted" style="margin:12px 0 0;font-size:13.5px">Tiers are a general estimate across branches. Whether a PSU hires ECE at all depends on that year\u2019s notice, so also watch BEL, HAL, BSNL, NPCIL, BARC, ISRO and DRDO for electronics roles.</p></div>`;
+}
+
+function viewRoad(){
+  const now=today();
+  const items=PHASES.map((p,i)=>{
+    const on=now>=p.a&&now<=p.b, n=dayDiff(p.a,p.b)+1;
+    const tags=p.s.length<6?p.s.map(id=>`<button class="chip sub" data-a="open" data-id="${id}" style="--h:${sub(id).h}"><i></i>${sub(id).short}</button>`).join(''):'<span class="chip">All subjects</span>';
+    return `<div class="phase${on?' now':''}"><time>${fmt(p.a)} to ${fmt(p.b)}<small>${n} days${on?', you are here':''}</small></time>
+      <div><b>${i+1}. ${p.t}</b><p>${p.g}</p><div class="tags">${tags}</div></div></div>`;
+  }).join('');
+  return `<div class="card"><h2>Twelve weeks, four moves</h2>
+    <p class="lead">Learn the core subjects in order, revise twice with previous-year questions, then spend the last twelve days on full mocks. Do 30 minutes of aptitude every day through all phases.</p>${items}</div>`;
+}
+
+/* ---------------------------------------------------------------
+   RENDER + EVENTS
+---------------------------------------------------------------- */
+function render(){
+  renderNav();
+  const v={today:viewToday,syllabus:viewSyllabus,plan:viewPlan,psu:viewPSU,road:viewRoad}[S.tab]();
+  $('#app').innerHTML=hero()+v;
+  if(S.tab==='plan') updatePlan();
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]'); if(!b||b.dataset.a==='acc') return;
+  const a=b.dataset.a, scrollY=window.scrollY;
+  if(a==='tab'){S.tab=b.dataset.id;}
+  else if(a==='open'){S.sub=b.dataset.id;S.tab='syllabus';}
+  else if(a==='stage'){const p=(S.prog[b.dataset.t]||[0,0,0]).slice();const i=+b.dataset.i;p[i]=p[i]?0:1;S.prog[b.dataset.t]=p;persist();}
+  else if(a==='check'){const k=key(today());const c=(S.checks[k]||[]).slice();const i=+b.dataset.i;c[i]=!c[i];S.checks[k]=c;persist();}
+  else if(a==='hrs'){const k=key(today());S.hours[k]=Math.max(0,Math.min(16,(S.hours[k]||0)+(+b.dataset.d)));persist();}
+  render();
+  if(a==='tab'||a==='open') window.scrollTo({top:0});
+  else window.scrollTo({top:scrollY});
+});
+document.addEventListener('input',e=>{
+  const r=e.target; if(r.dataset.a!=='acc') return;
+  const id=r.dataset.id, s=sub(id); S.acc[id]=+r.value;
+  $('#av-'+id).textContent=r.value; $('#pv-'+id).textContent=(s.marks*r.value/100).toFixed(1);
+  updatePlan(); persist();
+});
+
+(async()=>{
+  render();
+  const saved=await store.load();
+  if(saved){ S={...S,...saved,tab:'today',sub:'ns'}; render(); }
+})();
+</script>
+</body>
+</html>
